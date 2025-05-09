@@ -1,15 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import './App.css'
-import AuthService, { authService } from './appwrite/auth.js'
+import AuthService, { authService } from './appwrite/auth.js';
+import { login, logout } from './store/authSlice.js';
+import { Footer, Header } from './components/index.js';
 
 function App() {
-  const [count, setCount] = useState(0)
-  const auth = new AuthService();
-  console.log(auth);
+  const [loading, setLoading] = useState(true);
 
-  return (
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    authService.getCurrUser()
+      .then((user) => {
+        if (user) {
+          dispatch(login({ user }))
+        } else {
+          dispatch(logout());
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }
+    , []
+  )
+
+  return loading ? <h1>Loading...</h1> : (
     <>
-      <h1>DevBlog - Blogs for web-development</h1>
+      <div className='min-h-[100vh] min-w-[100vw] flex flex-col justify-between'>
+        <Header />
+        <main className='bg-gray-600'>
+          Dev Blogs here...
+        </main>
+        <Footer />
+      </div>
     </>
   )
 }
