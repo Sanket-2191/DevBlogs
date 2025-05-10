@@ -27,12 +27,12 @@ class Service {
                     userId
                 }, // data
             );
-            if (!newDoc) throw new Error("APPWRITE SERVICE :: New Blog not created.")
+            if (!newDoc) console.log("APPWRITE SERVICE :: New Blog not created.")
 
             return newDoc;
 
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to create new Blog: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to create new Blog: ", error)
         }
     }
 
@@ -46,7 +46,7 @@ class Service {
             )
 
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to update the Blog: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to update the Blog: ", error)
         }
     }
 
@@ -58,7 +58,7 @@ class Service {
                 docId
             )
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to Delete the Blog: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to Delete the Blog: ", error)
         }
     }
 
@@ -70,7 +70,7 @@ class Service {
                 docId
             )
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to fetch a Blog: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to fetch a Blog: ", error)
         }
     }
 
@@ -82,7 +82,7 @@ class Service {
                 query
             )
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to fetch Blogs: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to fetch Blogs: ", error)
         }
     }
 
@@ -94,7 +94,7 @@ class Service {
                 file
             )
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to upload a file: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to upload a file: ", error)
         }
     }
 
@@ -105,7 +105,7 @@ class Service {
                 fileId
             )
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to delete a file: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to delete a file: ", error)
         }
     }
 
@@ -116,7 +116,7 @@ class Service {
                 fileId
             )
         } catch (error) {
-            throw new Error("APPWRITE SERVICE :: Error while trying to get preview of a file: ", error)
+            console.log("APPWRITE SERVICE :: Error while trying to get preview of a file: ", error)
         }
     }
 }

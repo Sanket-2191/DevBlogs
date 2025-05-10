@@ -16,11 +16,11 @@ class AuthService {
         try {
             const newAccount = await this.account.create(ID.unique(), email, password, username, fullname);
 
-            if (!newAccount) throw new Error("APPWRITE AUTH SERVICE :: New Account was not created");
+            if (!newAccount) console.log("APPWRITE AUTH SERVICE :: New Account was not created");
 
             return this.login({ email, password });
         } catch (error) {
-            throw new Error("APPWRITE AUTH SERVICE :: Some error occured during signUp: ", error)
+            console.log("APPWRITE AUTH SERVICE :: Some error occured during signUp: ", error)
         }
     }
 
@@ -31,11 +31,11 @@ class AuthService {
                 password
             );
 
-            if (!userSession) throw new Error("APPWRITE AUTH SERVICE :: Login Failed");
+            if (!userSession) console.log("APPWRITE AUTH SERVICE :: Login Failed");
 
             return userSession;
         } catch (error) {
-            throw new Error("APPWRITE AUTH SERVICE :: Some error occured during Login: ", error)
+            console.log("APPWRITE AUTH SERVICE :: Some error occured during Login: ", error)
         }
     }
 
@@ -43,7 +43,7 @@ class AuthService {
         try {
             return await this.account.get()
         } catch (error) {
-            throw new Error("APPWRITE AUTH SERVICE :: User is not LoggedIn: ", error)
+            console.log("APPWRITE AUTH SERVICE :: User is not LoggedIn: ", error)
         }
 
     }
@@ -52,7 +52,7 @@ class AuthService {
         try {
             return await this.account.deleteSessions()
         } catch (error) {
-            throw new Error("APPWRITE AUTH SERVICE :: Logout: ", error)
+            console.log("APPWRITE AUTH SERVICE :: Logout: ", error)
         }
     }
 
