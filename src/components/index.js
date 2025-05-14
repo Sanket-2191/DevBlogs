@@ -8,6 +8,10 @@ import Input from "./Input.jsx";
 import PostCard from "./PostCard.jsx";
 import Select from "./Select.jsx";
 import RealTimeEditor from "./RealTimeEditor.jsx";
+import Signup from "./Signup.jsx";
+import Login from "./Login.jsx";
+import PostForm from "./PostForm/PostForm.jsx";
+import AuthLayout from "./AuthLayout.jsx";
 
 export {
     Header,
@@ -19,5 +23,9 @@ export {
     Input,
     PostCard,
     Select,
-    RealTimeEditor
+    RealTimeEditor,
+    Signup,
+    Login,
+    PostForm,
+    AuthLayout
 };
