@@ -31,7 +31,7 @@ function App() {
     <>
       <div className='min-h-[100vh] min-w-[100vw] flex flex-col justify-between'>
         <Header />
-        <main className='bg-gray-600'>
+        <main className='bg-gray-600' >
           Dev Blogs here...
         </main>
         <Footer />
