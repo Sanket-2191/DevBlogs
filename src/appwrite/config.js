@@ -13,12 +13,12 @@ class Service {
         this.storage = new Storage(this.client);
     }
 
-    async createBlog({ title, content, status, contentImage, userId }) {
+    async createBlog({ title, slug, content, status, contentImage, userId }) {
         try {
             const newDoc = await this.databases.createDocument(
                 config.appwriteDBId, // databaseId
                 config.appwriteCollectionId, // collectionId
-                ID.unique(), // documentId
+                slug, // documentId
                 {
                     title,
                     content,
@@ -36,12 +36,12 @@ class Service {
         }
     }
 
-    async updateBlog(docId, { title, content, status, contentImage }) {
+    async updateBlog(slug, { title, content, status, contentImage }) {
         try {
             return await this.databases.updateDocument(
                 config.appwriteDBId,
                 config.appwriteCollectionId,
-                docId,
+                slug,
                 { title, content, status, contentImage }
             )
 
@@ -50,24 +50,24 @@ class Service {
         }
     }
 
-    async deleteBlog(docId) {
+    async deleteBlog(slug) {
         try {
             return await this.databases.deleteDocument(
                 config.appwriteDBId,
                 config.appwriteCollectionId,
-                docId
+                slug
             )
         } catch (error) {
             console.log("APPWRITE SERVICE :: Error while trying to Delete the Blog: ", error)
         }
     }
 
-    async getABlog(docId) {
+    async getABlog(slug) {
         try {
             return await this.databases.getDocument(
                 config.appwriteDBId,
                 config.appwriteCollectionId,
-                docId
+                slug
             )
         } catch (error) {
             console.log("APPWRITE SERVICE :: Error while trying to fetch a Blog: ", error)
