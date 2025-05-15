@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const EditPostPage = () => {
     const [post, setPost] = useState(null);
 
-    const slug = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
 
     useEffect(async () => {
@@ -21,6 +21,8 @@ const EditPostPage = () => {
             // else {
             //     navigate("/404");
             // }
+        } else {
+            navigate("/");
         }
     }, [slug, navigate])
     return post ? (
