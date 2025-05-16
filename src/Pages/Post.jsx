@@ -35,38 +35,48 @@ const Post = () => {
         });
     };
 
-    return post ? (
+    return (
         <div className="py-8">
-            <Container>
-                <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-                    <img
-                        src={service.getFilePreview(post.featuredImage)}
-                        alt={post.title}
-                        className="rounded-xl"
-                    />
+            <Container >
+                {post ?
+                    <>
+                        <div className="max-w-5xl mb-4 relative rounded-xl p-2">
+                            <img
+                                src={service.getFilePreview(post.contentImage)}
+                                alt={post.title}
+                                className="rounded-xl"
+                            />
 
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`}>
-                                <Button bgColor="bg-green-500" className="mr-3">
-                                    Edit
-                                </Button>
-                            </Link>
-                            <Button bgColor="bg-red-500" onClick={deletePost}>
-                                Delete
-                            </Button>
+                            {isAuthor && (
+                                <div className="absolute sm:right-6 sm:top-6 -bottom-9 right-4">
+                                    <Link to={`/edit-post/${post.$id}`}>
+                                        <Button bgColor="bg-primary" className="mr-3 hover:scale-110 py-1">
+                                            Edit
+                                        </Button>
+                                    </Link>
+                                    <Button
+                                        bgColor="bg-red"
+                                        className="hover:scale-110 py-1"
+                                        onClick={deletePost}>
+                                        Delete
+                                    </Button>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                </div>
-                <div className="browser-css">
-                    {parse(post.content)}
-                </div>
+                        <div className="w-full text-center sm:text-start sm:pt-2 pt-6">
+                            <h1 className="md:text-3xl text-2xl font-bold">{post.title}</h1>
+                        </div>
+                        <div className="browser-css sm:text-xl text-xs">
+                            {parse(post.content)}
+                        </div>
+                    </>
+                    :
+                    <div className="w-full text-center sm:text-start sm:pt-2 pt-6">
+                        <h1 className="md:text-3xl text-2xl font-bold">{slug} not Available.</h1>
+                    </div>}
             </Container>
         </div>
-    ) : null;
+    );
 }
 
 export default Post

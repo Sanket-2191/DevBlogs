@@ -25,13 +25,19 @@ const EditPostPage = () => {
             navigate("/");
         }
     }, [slug, navigate])
-    return post ? (
+    return (
         <div className='py-8'>
             <Container>
-                <PostForm post={post} />
+                {post ?
+                    <PostForm post={post} />
+                    :
+                    <h1>
+                        Post Unavailable.
+                    </h1>
+                }
             </Container>
         </div>
-    ) : null;
+    )
 }
 
 export default EditPostPage

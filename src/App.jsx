@@ -5,6 +5,7 @@ import './App.css'
 import AuthService, { authService } from './appwrite/auth.js';
 import { login, logout } from './store/authSlice.js';
 import { Footer, Header } from './components/index.js';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -27,17 +28,18 @@ function App() {
     , []
   )
 
-  return loading ? <h1>Loading...</h1> : (
-    <>
-      <div className='min-h-[100vh] min-w-[100vw] flex flex-col justify-between'>
+  return !loading ? (
+    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
+      <div className='w-full block'>
         <Header />
-        <main className='bg-gray-600' >
-          Dev Blogs here...
+        <main className='bg-background'>
+          <Outlet />
         </main>
         <Footer />
       </div>
-    </>
-  )
+    </div>
+  ) : <h1>Loading...</h1>
+
 }
 
 export default App

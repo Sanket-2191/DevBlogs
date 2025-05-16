@@ -24,16 +24,16 @@ const AllPostsPage = () => {
     }, []);
 
     return (
-        <div className='w-full py-8'>
-            <Container>
-                <div className='flex flex-wrap'>
+        <div className='w-full py-8 md:pt-10'>
+            <div className='w-full max-w-8xl mx-auto px-4'>
+                <div className='flex flex-wrap justify-center'>
                     {posts.map((post) => (
-                        <div key={post.$id} className='p-2 w-1/4'>
-                            <PostCard {...post} />
+                        <div key={post.$id} className='p-2 hover:scale-95 transition-all duration-200'>
+                            <PostCard post={post} />
                         </div>
                     ))}
                 </div>
-            </Container>
+            </div>
         </div>
     )
 }

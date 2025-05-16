@@ -7,9 +7,11 @@ import { Container, PostForm } from '../components/index.js'
 
 const AddPostPage = () => {
     return (
-        <Container>
-            <PostForm />
-        </Container>
+        <div className='py-8'>
+            <Container>
+                <PostForm />
+            </Container>
+        </div>
     )
 }
 

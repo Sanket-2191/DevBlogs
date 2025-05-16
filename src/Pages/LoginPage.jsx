@@ -1,12 +1,14 @@
 
 import React from 'react';
 
-import { Login } from "../components/index.js";
+import { Container, Login } from "../components/index.js";
 
 
 const LoginPage = () => {
     return (
-        <Login />
+        <div className='py-8'>
+            <Login />
+        </div>
     )
 }
 

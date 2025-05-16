@@ -23,5 +23,4 @@ const AuthLayout = ({ children }) => {
     )
 }
 
-export default AuthLayout
-{ children }
+export default AuthLayout;

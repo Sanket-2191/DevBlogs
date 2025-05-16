@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 
 import { Logo, LogoutBtn, Container } from '../index.js'
 import { authSelector } from '../../store/authSlice.js'
@@ -39,35 +39,38 @@ const Header = () => {
     ]
 
     return (
-        <header className='py-3 shadow bg-gray-500'>
+        <header className="sm:py-3 py-2 shadow-lg bg-background sticky top-0 z-10">
             <Container>
-                <nav className='flex'>
-                    <div className='mr-4'>
-                        <Link to='/'>
-                            <Logo width='70px' />
-
+                <nav className="flex flex-wrap items-center justify-center">
+                    <div className="sm:mr-4 w-14">
+                        <Link>
+                            <Logo width="100px" />
                         </Link>
                     </div>
-                    <ul className='flex ml-auto'>
-                        {navItems.map((item) =>
-                            item.active ? (
-                                <li key={item.name}>
-                                    <button
-                                        onClick={() => navigate(item.route)}
-                                        className='inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
-                                    >{item.name}</button>
+                    <div className="ml-auto flex items-center justify-between">
+                        <ul className="flex sm:space-x-7 space-x-3 md:mr-2">
+                            {navItems.map((item) =>
+                                item.active ? (
+                                    <li key={item.name}>
+                                        <NavLink to={item.route}
+                                            className={({ isActive }) => `${isActive ? "text-primary" : "text-text"} hover:text-primary `}
+                                            onClick={() => navigate(item.route)}
+                                        >
+                                            {item.name}
+                                        </NavLink>
+                                    </li>
+                                ) : null
+                            )}
+                            {loggedIn && (
+                                <li className="list-none rounded-full text-text md:hover:bg-accent hover:text-background " key="logoutBtn">
+                                    <LogoutBtn />
                                 </li>
-                            ) : null
-                        )}
-                        {loggedIn && (
-                            <li key="logoutBtn">
-                                <LogoutBtn />
-                            </li>
-                        )}
-                    </ul>
+                            )}
+                        </ul>
+                    </div>
                 </nav>
             </Container>
-        </header>
+        </header >
     )
 }
 

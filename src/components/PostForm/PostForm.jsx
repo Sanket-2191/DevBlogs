@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Input, Select, RealTimeEditor } from '../index.js';
+import { Button, Input, Select, RealTimeEditor, Container } from '../index.js';
 import { service } from '../../appwrite/config.js';
 import { authSelector } from '../../store/authSlice.js';
 
@@ -69,34 +69,35 @@ const PostForm = ({ post }) => {
         return () => {
             subscription.unsubscribe();
         }
-    }, [watch, idTransform, setValue])
+    }, [watch, slugTransform, setValue])
     return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+        // <Container >
+        <form onSubmit={handleSubmit(submit)} className='flex sm:flex-row flex-col'>
+            <div className='sm:w-2/3 px-2'>
                 <Input
-                    label="Title :"
-                    placeholder="Title"
-                    className="mb-4"
-                    {...register("title", { required: true })}
+                    label='Title: '
+                    placeholder='Title'
+                    className='mb-4'
+                    {...register('title', { required: true })}
                 />
                 <Input
-                    label="Slug :"
-                    placeholder="Slug"
-                    className="mb-4"
-                    {...register("slug", { required: true })}
-                    onInput={(e) => {
-                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
-                    }}
+                    label='Slug: '
+                    placeholder='Slug'
+                    className='mb-4'
+                    {...register('slug', { required: true })}
+                    onInput={(e) => setValue("slug", slugTransform(e.currentTarget.value, {
+                        shouldValidate: true
+                    }))}
                 />
-                <RealTimeEditor label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                <RealTimeEditor label="Content: " name="content" control={control} defaultValue={getValues("content") || ""} />
             </div>
-            <div className="w-1/3 px-2">
+            <div className="sm:w-1/3 px-2">
                 <Input
-                    label="Featured Image :"
-                    type="file"
-                    className="mb-4"
+                    label='Featured Image: '
+                    type='file'
+                    className='mb-4'
                     accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
+                    {...register('featuredImage', { required: !post })}
                 />
                 {post && (
                     <div className="w-full mb-4">
@@ -110,14 +111,17 @@ const PostForm = ({ post }) => {
                 <Select
                     options={["active", "inactive"]}
                     label="Status"
-                    className="mb-4"
+                    className='mb-4'
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
+                <Button type='submit' bgColor='bg-primary' className='w-full hover:bg-accent'>
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>
         </form>
+
+        // </Container>
+
     )
 }
 

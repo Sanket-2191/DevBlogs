@@ -4,7 +4,9 @@ import React from 'react'
 
 const SignupPage = () => {
     return (
-        <Signup />
+        <div className='py-8'>
+            <Signup />
+        </div>
     )
 }
 
