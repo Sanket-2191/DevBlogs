@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 
-import { Logo, LogoutBtn, Container } from '../index.js'
+import { Logo, LogoutBtn, Container, Button } from '../index.js'
 import { authSelector } from '../../store/authSlice.js'
 
 const Header = () => {
@@ -39,7 +39,7 @@ const Header = () => {
     ]
 
     return (
-        <header className="sm:py-3 py-2 shadow-lg bg-background sticky top-0 z-10">
+        <header className="sm:py-3 py-2 shadow-lg bg-background backdrop-blur-2xl sticky top-0 z-10">
             <Container>
                 <nav className="flex flex-wrap items-center justify-center">
                     <div className="sm:mr-4 w-14">
@@ -52,11 +52,19 @@ const Header = () => {
                             {navItems.map((item) =>
                                 item.active ? (
                                     <li key={item.name}>
-                                        <NavLink to={item.route}
-                                            className={({ isActive }) => `${isActive ? "text-primary" : "text-text"} hover:text-primary `}
-                                            onClick={() => navigate(item.route)}
+                                        <NavLink
+                                            to={item.route}
+                                            className={({ isActive }) => ""}
                                         >
-                                            {item.name}
+                                            {({ isActive }) => (
+                                                <Button
+                                                    className={`inline-block sm:px-5 px-5 py-2 duration-200 rounded-full
+                                                         hover:bg-gray-600 ${isActive ? "text-primary" : "bg-black"
+                                                        }`}
+                                                >
+                                                    {item.name}
+                                                </Button>
+                                            )}
                                         </NavLink>
                                     </li>
                                 ) : null

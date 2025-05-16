@@ -27,7 +27,7 @@ const Post = () => {
     }, [slug, navigate]);
 
     const deletePost = () => {
-        service.deleteBlog(post.$id).then((status) => {
+        service.deleteBlog(slug).then((status) => {
             if (status) {
                 service.deleteFile(post.featuredImage);
                 navigate("/");

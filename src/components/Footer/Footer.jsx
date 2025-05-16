@@ -4,7 +4,7 @@ import Logo from '../Logo';
 
 const Footer = () => {
     return (
-        <footer className="relative bg-background overflow-hidden py-10 border-t-2 border-t-black z-0">
+        <footer className="w-full  h-max-[35vh] bottom-0 bg-gray-600 overflow-hidden py-10 border-t-2 border-t-black z-0">
             <div className="relative z-10 mx-auto max-w-7xl px-4">
                 <div className="-m-6 flex flex-wrap">
                     <div className="w-full p-6 md:w-1/2 lg:w-5/12">
@@ -13,7 +13,7 @@ const Footer = () => {
                                 <Logo width="100px" />
                             </div>
                             <div>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-black">
                                     &copy; Copyright 2025. All Rights Reserved by DevBlogs.
                                 </p>
                             </div>

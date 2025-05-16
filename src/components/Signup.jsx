@@ -12,10 +12,12 @@ const Signup = () => {
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
 
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState("");
 
     const signup = async (data) => {
         setError("");
+        setLoading(true);
         try {
             const user = await authService.signUp(data);
 
@@ -27,6 +29,8 @@ const Signup = () => {
             }
         } catch (error) {
             setError(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -94,9 +98,10 @@ const Signup = () => {
                         <Button
                             bgColor='bg-primary'
                             type='submit'
-                            className='w-full hover:bg-text hover:text-background'
+                            className='w-full hover:bg-text hover:text-background  bg-black text-white'
+                            disabled={loading}
                         >
-                            SignUp
+                            {loading ? "Signing up..." : "Sign Up"}
                         </Button>
                     </div>
                 </form>

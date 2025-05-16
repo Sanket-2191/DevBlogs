@@ -16,46 +16,49 @@ class AuthService {
         try {
             const newAccount = await this.account.create(ID.unique(), email, password, username, fullname);
 
-            if (!newAccount) console.log("APPWRITE AUTH SERVICE :: New Account was not created");
+            if (!newAccount) {
+                throw new Error("New account was not created");
+            }
 
             return this.login({ email, password });
         } catch (error) {
-            console.log("APPWRITE AUTH SERVICE :: Some error occured during signUp: ", error)
+            console.error("APPWRITE AUTH SERVICE :: signUp error:", error);
+            throw error;
         }
     }
 
     async login({ email, password }) {
         try {
-            const userSession = await this.account.createEmailPasswordSession(
-                email,
-                password
-            );
+            const userSession = await this.account.createEmailPasswordSession(email, password);
 
-            if (!userSession) console.log("APPWRITE AUTH SERVICE :: Login Failed");
+            if (!userSession) {
+                throw new Error("Login failed");
+            }
 
             return userSession;
         } catch (error) {
-            console.log("APPWRITE AUTH SERVICE :: Some error occured during Login: ", error)
+            console.error("APPWRITE AUTH SERVICE :: login error:", error);
+            throw error;
         }
     }
 
     async getCurrUser() {
         try {
-            return await this.account.get()
+            return await this.account.get();
         } catch (error) {
-            console.log("APPWRITE AUTH SERVICE :: User is not LoggedIn: ", error)
+            console.error("APPWRITE AUTH SERVICE :: getCurrUser error:", error);
+            throw error;
         }
-
     }
 
     async logout() {
         try {
-            return await this.account.deleteSessions()
+            return await this.account.deleteSessions();
         } catch (error) {
-            console.log("APPWRITE AUTH SERVICE :: Logout: ", error)
+            console.error("APPWRITE AUTH SERVICE :: logout error:", error);
+            throw error;
         }
     }
-
 }
 
 

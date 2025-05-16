@@ -8,6 +8,8 @@ const authSlice = createSlice({
     initialState: INITIAL_STATE,
     reducers: {
         login: (state, action) => {
+            // console.log("In login action: ", action);
+
             state.loggedIn = true;
             state.user = action.payload.user;
         },

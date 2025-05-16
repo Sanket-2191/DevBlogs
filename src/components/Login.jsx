@@ -12,19 +12,23 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { register, handleSubmit } = useForm()
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false)
 
     const login = async (data) => {
         setError("")
+        setLoading(true)
         try {
             const session = await authService.login(data)
             if (session) {
                 const userData = await authService.getCurrUser()
-                if (userData) dispatch(loginAct(userData));
+                if (userData) dispatch(loginAct(userData))
                 navigate("/")
             }
         } catch (error) {
-            setError(error.message)
+            setError("Invalid email or password")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -50,7 +54,7 @@ const Login = () => {
                 </p>
                 {
                     error &&
-                    <p className='text-red font-bold mt-8 text-center'>
+                    <p className='text-red-500 font-bold mt-8 text-center'>
                         {error}
                     </p>
                 }
@@ -83,9 +87,10 @@ const Login = () => {
                         <Button
                             bgColor='bg-primary'
                             type='submit'
-                            className='w-full hover:bg-text hover:text-background'
+                            className='w-full hover:bg-text hover:text-background bg-black text-white'
+                            disabled={loading}
                         >
-                            Login
+                            {loading ? "Logging in..." : "Login"}
                         </Button>
                     </div>
 

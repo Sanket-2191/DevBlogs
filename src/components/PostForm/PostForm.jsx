@@ -20,9 +20,10 @@ const PostForm = ({ post }) => {
 
 
     const navigate = useNavigate();;
-    const userData = useSelector(authSelector);
+    const { user } = useSelector(authSelector);
 
     const submit = async (data) => {
+
         if (post) {
             const file = await data.image[0] ? service.uploadFile(data.image[0]) : null;
 
@@ -36,15 +37,23 @@ const PostForm = ({ post }) => {
                 navigate(`/post/${updatedPost.$id}`);
             }
         } else {
-            const file = await service.uploadFile(data.image[0]);
+            const file = await service.uploadFile(data.contentImage[0]);
 
             if (file) {
                 const fileId = file.$id;
-                data.contentImage = fileId;
-                const dbPost = await service.createBlog({ ...data, userId: userData.$id });
+                // data.contentImage = fileId;
+                const newBlog = {
+                    title: data.title,
+                    slug: data.slug,
+                    content: data.content,
+                    status: data.status,
+                    contentImage: fileId,
+                    userId: user.$id
+                }
+                const dbPost = await service.createBlog(newBlog);
 
                 if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`);
+                    navigate(`/post/${dbPost.slug}`);
                 }
             }
         }
@@ -53,23 +62,29 @@ const PostForm = ({ post }) => {
 
     const slugTransform = useCallback((value) => {
         if (value && typeof value === 'string') {
-            return value.trim().toLowerCase().replace(/^[a-zA-Z\d\s]+/g, '-').replace(/\s/g, '-');
+            return value
+                .trim()
+                .toLowerCase()
+                .replace(/\s/g, '-')
         }
 
-        return "";
+        return ''
     }, [])
 
     useEffect(() => {
-        const subscription = watch((value) => {
+        const subscription = watch((value, { name }) => {
             if (name === 'title') {
-                setValue('id', slugTransform(value.title, { shouldValidate: true }));
+                setValue('slug', slugTransform(value.title, {
+                    shouldValidate: true
+                }))
             }
         })
 
         return () => {
-            subscription.unsubscribe();
+            subscription.unsubscribe()
         }
     }, [watch, slugTransform, setValue])
+
     return (
         // <Container >
         <form onSubmit={handleSubmit(submit)} className='flex sm:flex-row flex-col'>
@@ -93,11 +108,11 @@ const PostForm = ({ post }) => {
             </div>
             <div className="sm:w-1/3 px-2">
                 <Input
-                    label='Featured Image: '
+                    label='Content Image: '
                     type='file'
                     className='mb-4'
-                    accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register('featuredImage', { required: !post })}
+                    accept="image/png, image/jpg, image/jpeg, image/gif image/webp"
+                    {...register('contentImage', { required: !post })}
                 />
                 {post && (
                     <div className="w-full mb-4">

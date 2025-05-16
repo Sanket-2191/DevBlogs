@@ -20,6 +20,7 @@ class Service {
                 config.appwriteCollectionId, // collectionId
                 slug, // documentId
                 {
+                    slug,
                     title,
                     content,
                     contentImage,
