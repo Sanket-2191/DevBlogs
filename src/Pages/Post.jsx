@@ -73,11 +73,11 @@ const Post = () => {
                     : null}
                 {post ?
                     <>
-                        <div className="max-w-5xl mb-4 relative rounded-xl p-2">
+                        <div className=" aspect-auto mb-4 relative rounded-xl p-2">
                             <img
                                 src={fileUrl}
                                 alt={post.title}
-                                className="rounded-xl"
+                                className="rounded-xl max-w-[70vw] max-h-[40vh] object-cover"
                             />
 
                             {isAuthor && (
