@@ -16,6 +16,8 @@ function App() {
     authService.getCurrUser()
       .then((user) => {
         if (user) {
+          console.log("getting curr user in App:", user);
+
           dispatch(login({ user }))
         } else {
           dispatch(logout());

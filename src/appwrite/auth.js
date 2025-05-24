@@ -44,12 +44,16 @@ class AuthService {
 
     async getCurrUser() {
         try {
-            return await this.account.get();
+            const currUser = await this.account.get();
+            // console.log("getCurrUser: ", currUser);
+
+            return currUser;
         } catch (error) {
             console.error("APPWRITE AUTH SERVICE :: getCurrUser error:", error);
             throw error;
         }
     }
+
 
     async logout() {
         try {

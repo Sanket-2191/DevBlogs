@@ -12,7 +12,8 @@ const Home = () => {
     const [posts, setPosts] = useState([])
 
     const { loggedIn } = useSelector(authSelector);
-
+    // using same logic to fetch posts as in AllPostsPage
+    // TODO: shift the logic to post store actions using async thunk.
     useEffect(() => {
         service.getBlogs().then((allPosts) => {
             if (allPosts) {
@@ -32,12 +33,12 @@ const Home = () => {
                             </h1>
                             <div className='flex flex-col gap-6'>
                                 <Link to='/signup'>
-                                    <Button bgColor='bg-primary'>
+                                    <Button bgColor='bg-black'>
                                         Signup
                                     </Button>
                                 </Link>
                                 <Link to='/login'>
-                                    <Button bgColor='bg-primary'>
+                                    <Button bgColor='bg-black'>
                                         Login
                                     </Button>
                                 </Link>

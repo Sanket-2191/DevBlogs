@@ -1,63 +1,98 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 import { service } from "../appwrite/config.js";
 import { Button, Container } from "../components/index.js";
 import { authSelector } from "../store/authSlice.js";
+import { currPost } from "../store/postSlice.js";
+import Confirm from "./Confirm.jsx";
 
 const Post = () => {
-    const [post, setPost] = useState(null);
     const { slug } = useParams();
     const navigate = useNavigate();
+    const [fileUrl, setFileUrl] = useState("");
+    const [post, setPost] = useState(null);
+    const dispatch = useDispatch();
 
-    const userData = useSelector(authSelector);
+    const { user } = useSelector(authSelector);
 
-    const isAuthor = post && userData ? post.userId === userData.$id : false;
+    const isAuthor = post && user ? post.userId === user.$id : false;
+
+    console.log("is Author: ", isAuthor);
+
 
     useEffect(() => {
-        if (slug) {
-            service.getABlog(slug).then((post) => {
-                if (post) setPost(post);
+        const postInfo = async () => {
+            if (slug) {
+                const post = await service.getABlog(slug);
+                if (post) {
+                    setPost(post);
+                    dispatch(currPost({ post }));
+                }
                 else navigate("/");
-            });
-        } else navigate("/");
+                // console.log("Post: ", post);
+            } else navigate("/");
+        }
+
+        postInfo();
     }, [slug, navigate]);
 
     const deletePost = () => {
         service.deleteBlog(slug).then((status) => {
             if (status) {
-                service.deleteFile(post.featuredImage);
+                service.deleteFile(post.contentImage);
+                dispatch(currPost({ post: null }));
                 navigate("/");
             }
         });
     };
+    // let fileurl = "";
+    service.getFilePreview(post?.contentImage).then((url) => {
+        setFileUrl(url);
+        // console.log("File URL: ", url);
+    }).catch((error) => {
+        console.error("Error fetching file preview:", error);
+    });
+
+    const [confirmationModal, setConfirmationModal] = useState(false);
+    const handleButtonClick = () => setConfirmationModal(true);
+    const handleCloseModal = () => setConfirmationModal(false);
 
     return (
         <div className="py-8">
             <Container >
+                {confirmationModal ?
+                    <Confirm
+                        handleCloseModal={handleCloseModal}
+                        confirmHandler={deletePost}
+                        textContent={"Do you really want to delete?"}
+                        btnText={'Delete'} />
+                    : null}
                 {post ?
                     <>
                         <div className="max-w-5xl mb-4 relative rounded-xl p-2">
                             <img
-                                src={service.getFilePreview(post.contentImage)}
+                                src={fileUrl}
                                 alt={post.title}
                                 className="rounded-xl"
                             />
 
                             {isAuthor && (
-                                <div className="absolute sm:right-6 sm:top-6 -bottom-9 right-4">
+                                <div className="absolute sm:right-6 sm:top-6 -bottom-9 right-4 m-1">
                                     <Link to={`/edit-post/${post.$id}`}>
-                                        <Button bgColor="bg-primary" className="mr-3 hover:scale-110 py-1">
+                                        <Button bgColor="bg-blue-500" className="mr-3 hover:scale-110 py-1">
                                             Edit
                                         </Button>
                                     </Link>
                                     <Button
-                                        bgColor="bg-red"
+                                        bgColor="bg-red-700"
                                         className="hover:scale-110 py-1"
-                                        onClick={deletePost}>
+                                        onClick={handleButtonClick}
+
+                                    >
                                         Delete
                                     </Button>
                                 </div>

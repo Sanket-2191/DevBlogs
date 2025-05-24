@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Input, Select, RealTimeEditor, Container } from '../index.js';
+import { Button, Input, Select, RealTimeEditor } from '../index.js';
 import { service } from '../../appwrite/config.js';
-import { authSelector } from '../../store/authSlice.js';
+import { authSelector, login } from '../../store/authSlice.js';
+import { authService } from '../../appwrite/auth.js';
 
 const PostForm = ({ post }) => {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -17,22 +18,36 @@ const PostForm = ({ post }) => {
             status: post?.status || "active",
         }
     });
+    const dispatch = useDispatch();
+    const [loading, setLoading] = React.useState(false);
+    const navigate = useNavigate();
+    useEffect(() => {
+        authService.getCurrUser()
+            .then((user) => {
+                // console.log("User: useeffect", user);
+
+                dispatch(login({ user }))
+
+            })
+    }, [])
 
 
-    const navigate = useNavigate();;
     const { user } = useSelector(authSelector);
 
-    const submit = async (data) => {
 
+    const submit = async (data) => {
+        // console.log("user: ", user);
+        setLoading(true);
         if (post) {
             const file = await data.image[0] ? service.uploadFile(data.image[0]) : null;
 
             if (file) {
+
                 service.deleteFile(post.contentImage);
             }
 
-            const updatedPost = await service.updateBlog(post.$id, { ...data, contentImage: file ? file.$id : post.contentImage });
-
+            const updatedPost = await service.updateBlog(post.$id, { ...data, contentImage: file ? file?.$id : post.contentImage });
+            setLoading(false);
             if (updatedPost) {
                 navigate(`/post/${updatedPost.$id}`);
             }
@@ -50,8 +65,10 @@ const PostForm = ({ post }) => {
                     contentImage: fileId,
                     userId: user.$id
                 }
-                const dbPost = await service.createBlog(newBlog);
 
+                console.log("New Blog: ", newBlog);
+                const dbPost = await service.createBlog(newBlog);
+                setLoading(false);
                 if (dbPost) {
                     navigate(`/post/${dbPost.slug}`);
                 }
@@ -65,18 +82,19 @@ const PostForm = ({ post }) => {
             return value
                 .trim()
                 .toLowerCase()
-                .replace(/\s/g, '-')
+                .replace(/[^a-z0-9_.-]/g, '-') // Replace disallowed characters
+                .replace(/^-+/, '')            // Remove leading hyphens
+                .substring(0, 36);             // Limit to 36 characters
         }
-
-        return ''
-    }, [])
+        return '';
+    }, []);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (name === 'title') {
-                setValue('slug', slugTransform(value.title, {
+                setValue('slug', slugTransform(value.title), {
                     shouldValidate: true
-                }))
+                });
             }
         })
 
@@ -129,11 +147,12 @@ const PostForm = ({ post }) => {
                     className='mb-4'
                     {...register("status", { required: true })}
                 />
-                <Button type='submit' bgColor='bg-primary' className='w-full hover:bg-accent'>
-                    {post ? "Update" : "Submit"}
+                <Button type='submit' bgColor='bg-gray-400'
+                    className="inline-block sm:px-5 px-5 py-2 duration-200 rounded-full hover:bg-gray-600"  >
+                    {loading ? (post ? "Updating..." : "Submitting...") : (post ? "Update" : "Submit")}
                 </Button>
             </div>
-        </form>
+        </form >
 
         // </Container>
 

@@ -6,8 +6,9 @@ import { Client, Account, ID, Databases, Storage, Query } from "appwrite";
 class Service {
     constructor() {
         this.client = new Client()
-            .setEndpoint(config.appwriteUrl)
-            .setProject(config.appwriteProjectId);
+            .setEndpoint(`${config.appwriteUrl}`)
+            .setProject(`${config.appwriteProjectId}`);
+
         this.account = new Account(this.client);
         this.databases = new Databases(this.client);
         this.storage = new Storage(this.client);
@@ -15,6 +16,7 @@ class Service {
 
     async createBlog({ title, slug, content, status, contentImage, userId }) {
         try {
+            console.log("Data for new Blog: ", { title, slug, content, status, contentImage, userId })
             const newDoc = await this.databases.createDocument(
                 config.appwriteDBId, // databaseId
                 config.appwriteCollectionId, // collectionId
@@ -28,12 +30,12 @@ class Service {
                     userId
                 }, // data
             );
-            if (!newDoc) console.log("APPWRITE SERVICE :: New Blog not created.")
+            if (!newDoc) console.error("APPWRITE SERVICE :: New Blog not created.")
 
             return newDoc;
 
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to create new Blog: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to create new Blog: ", error)
         }
     }
 
@@ -47,7 +49,7 @@ class Service {
             )
 
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to update the Blog: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to update the Blog: ", error)
         }
     }
 
@@ -59,7 +61,7 @@ class Service {
                 slug
             )
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to Delete the Blog: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to Delete the Blog: ", error)
         }
     }
 
@@ -71,7 +73,7 @@ class Service {
                 slug
             )
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to fetch a Blog: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to fetch a Blog: ", error)
         }
     }
 
@@ -83,7 +85,7 @@ class Service {
                 query
             )
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to fetch Blogs: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to fetch Blogs: ", error)
         }
     }
 
@@ -95,7 +97,7 @@ class Service {
                 file
             )
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to upload a file: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to upload a file: ", error)
         }
     }
 
@@ -106,18 +108,22 @@ class Service {
                 fileId
             )
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to delete a file: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to delete a file: ", error)
         }
     }
 
     async getFilePreview(fileId) {
         try {
-            return await this.storage.getFilePreview(
+            // console.log("File preview for: ", fileId);
+
+            const file = await this.storage.getFilePreview(
                 config.appwriteBucketId,
                 fileId
             )
+            // console.log("File preview for: ", { fileId, fileSplit: file.split('preview').join("view") });
+            return file.split('preview').join("view");
         } catch (error) {
-            console.log("APPWRITE SERVICE :: Error while trying to get preview of a file: ", error)
+            console.error("APPWRITE SERVICE :: Error while trying to get preview of a file: ", error)
         }
     }
 }
