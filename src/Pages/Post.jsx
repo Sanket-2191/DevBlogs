@@ -21,7 +21,7 @@ const Post = () => {
 
     const isAuthor = post && user ? post.userId === user.$id : false;
 
-    console.log("is Author: ", isAuthor);
+    // console.log("is Author: ", isAuthor);
 
 
     useEffect(() => {

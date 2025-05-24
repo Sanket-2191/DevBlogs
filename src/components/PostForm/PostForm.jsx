@@ -39,7 +39,9 @@ const PostForm = ({ post }) => {
         // console.log("user: ", user);
         setLoading(true);
         if (post) {
-            const file = await data.image[0] ? service.uploadFile(data.image[0]) : null;
+            // console.log("Data received for update: ", data);
+
+            const file = await data.contentImage[0] ? service.uploadFile(data.contentImage[0]) : null;
 
             if (file) {
 

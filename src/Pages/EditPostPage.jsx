@@ -15,7 +15,7 @@ const EditPostPage = () => {
     const { currPost } = useSelector(postSelector);
 
     useEffect(() => {
-        console.log("Post to edit: ", currPost);
+        // console.log("Post to edit: ", currPost);
 
         if (!currPost) {
             navigate("/");
